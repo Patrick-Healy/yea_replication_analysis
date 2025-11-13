@@ -4,7 +4,7 @@
 ********************************************************************************
 
 * Chief's Information about citizens
-use "${repldir}/Data/01_base/survey_data/chief_knowledge.dta", clear
+use "${repldir}/data/01_base/survey_data/chief_knowledge.dta", clear
 keep a7 person*
 forvalue i=1(1)15{
 rename person`i'_need person_need`i'
@@ -20,7 +20,7 @@ save `chief_goods'
 
 * Info on respondents 
 forvalue i=1(1)15{
-insheet using "${repldir}/Data/01_base/survey_data/resident_info_quiz.csv", clear
+insheet using "${repldir}/data/01_base/survey_data/resident_info_quiz.csv", clear
 keep a7 photo`i'
 replace photo`i'=subinstr(photo`i',"."," ",.)
 rename photo`i' photo
@@ -42,7 +42,7 @@ tempfile photos_all
 save `photos_all'
 
 * Baseline survey
-u "${repldir}/Data/01_base/survey_data/baseline_noPII.dta",clear
+u "${repldir}/data/01_base/survey_data/baseline_noPII.dta",clear
 keep if tot_complete==1 
 keep code edu job1 
 tempfile baseline
@@ -99,7 +99,7 @@ save `chief_info'
 *************** City Chiefs' Information and Collection in L? ****************
 ********************************************************************************
 
-use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 keep if tmt==2
 replace house=0 if house==1 
 replace house=1 if house==2
@@ -120,7 +120,7 @@ graph export "$reploutdir/taxes_paid_chefknowindex_L_binned.pdf", replace
 *************** City Chiefs' Information and Collection in CwI? ****************
 ********************************************************************************
 
-use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 keep if tmt==3
 collapse (mean) taxes_paid visit_post_carto stratum  (rawsum) taxes_paid_amt , by(a7)
 
@@ -139,7 +139,7 @@ graph export "$reploutdir/taxes_paid_chefknowindex_CwI_binned.pdf", replace
 *************** City Chiefs' Information and Collection in C? ****************
 ********************************************************************************
 
-use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 keep if tmt==1
 replace house=0 if house==1 
 replace house=1 if house==2
@@ -163,7 +163,7 @@ graph export "$reploutdir/visits_chefknowindex_C_binned.pdf", replace
 eststo clear
 
 * CLI
-use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 keep if tmt==3
 collapse (mean) taxes_paid visit_post_carto stratum  (rawsum) taxes_paid_amt , by(a7)
 
@@ -185,7 +185,7 @@ su taxes_paid
 	estadd scalar Observations = `e(N)'
 	
 * Central
-use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 keep if tmt==1
 collapse (mean) taxes_paid visit_post_carto stratum  (rawsum) taxes_paid_amt , by(a7)
 
@@ -208,7 +208,7 @@ su taxes_paid
 	estadd scalar Observations = `e(N)'
 
 * Local
-use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 keep if tmt==2
 collapse (mean) taxes_paid visit_post_carto stratum  (rawsum) taxes_paid_amt , by(a7)
 

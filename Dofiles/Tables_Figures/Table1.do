@@ -5,7 +5,7 @@
 mat define T1 = J(5,2,.)
 
 * Tax campaign activity counts (registration and visits)
-use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 count if tmt!=.
 mat T1[1,1] = `r(N)'
 mat T1[2,1] = `r(N)' // same N for registration and visits
@@ -24,7 +24,7 @@ sa `treatment'
 * Evaluation activity counts
 
 	* Baseline
-	u "${repldir}/Data/01_base/survey_data/baseline_noPII.dta",clear
+	u "${repldir}/data/01_base/survey_data/baseline_noPII.dta",clear
 	keep if tot_complete==1
 
 	merge m:1 a7 using `treatment'
@@ -40,7 +40,7 @@ sa `treatment'
 	drop temp_rank
 	
 	* Midline
-	u "${repldir}/Data/01_base/survey_data/midline_noPII.dta",clear
+	u "${repldir}/data/01_base/survey_data/midline_noPII.dta",clear
 	keep if tot_complete==1
 	cap drop tmt
 
@@ -57,7 +57,7 @@ sa `treatment'
 	drop temp_rank
 	
 	* Endline
-	u "${repldir}/Data/01_base/survey_data/endline_round1_noPII.dta",clear
+	u "${repldir}/data/01_base/survey_data/endline_round1_noPII.dta",clear
 	keep if tot_complete==1
 	cap drop tmt
 

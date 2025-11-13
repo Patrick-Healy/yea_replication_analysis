@@ -1,9 +1,9 @@
 	
 * Use analysis data
-use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 
 * merge information on distance between respondent and collector home
-merge m:1 compound1 using  "${repldir}/Data/01_base/admin_data/hh_distances.dta", keep(match)
+merge m:1 compound1 using  "${repldir}/data/01_base/admin_data/hh_distances.dta", keep(match)
 	
 * Max distance to chief home 
 su dist_chief if tmt==2

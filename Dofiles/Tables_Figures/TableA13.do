@@ -1,5 +1,5 @@
 *Total tax burden
-use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 
 egen time_FE_tdm_2mo_CvL = cut(today_alt),at(21355 21415 21475 21532) icodes
 

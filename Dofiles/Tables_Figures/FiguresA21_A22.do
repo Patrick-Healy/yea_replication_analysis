@@ -6,7 +6,7 @@
 * Prepare Dataset 
 
 	* Use Clean dataset
-	use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+	use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 	gen n=1
 	replace tmt = 3 if a7==387 & tmt==.
 	replace tmt = 1 if a7==545 & tmt==.
@@ -23,10 +23,10 @@
 	collapse (rawsum)taxes_paid_amt bonus_amt n (max) month stratum , by(a7 tmt)
 	
 	* Merge with transport costs per polygon
-	merge 1:1 a7 using "${repldir}/Data/01_base/admin_data/neighborhood_transport_cost.dta", nogen
+	merge 1:1 a7 using "${repldir}/data/01_base/admin_data/neighborhood_transport_cost.dta", nogen
 	
 	* Polygon distance to city center for cost-efficiency heterogeneity
-	merge 1:1 a7 using "${repldir}/Data/01_base/admin_data/neighborhood_centroids.dta", keepusing(dist_city_center) nogen
+	merge 1:1 a7 using "${repldir}/data/01_base/admin_data/neighborhood_centroids.dta", keepusing(dist_city_center) nogen
 	
 
 *******************

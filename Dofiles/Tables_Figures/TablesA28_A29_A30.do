@@ -2,7 +2,7 @@
 set matsize 800
 
 * Use clean final data
-use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 
 * Carto: did the collector read all of the flyer?
 replace read_flyers=. if read_flyers==.d

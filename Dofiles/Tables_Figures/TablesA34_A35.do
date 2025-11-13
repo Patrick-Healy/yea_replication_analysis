@@ -3,7 +3,7 @@
 * Tables A34 and A35 *
 **********************
 
-	use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+	use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 	
 	global RI_ON = 0
 	
@@ -69,7 +69,7 @@
 		preserve
 
 			* Simulations
-			insheet using "${repldir}/Data/01_base/admin_data/property_values_MLestimates.csv", clear
+			insheet using "${repldir}/data/01_base/admin_data/property_values_MLestimates.csv", clear
 			rename pred_value prediction
 
 			* Keep relevant variables
@@ -93,7 +93,7 @@
 	
 		preserve
 			* Baseline data
-			u "${repldir}/Data/01_base/survey_data/baseline_noPII.dta",clear
+			u "${repldir}/data/01_base/survey_data/baseline_noPII.dta",clear
 			keep if tot_complete==1
 			ren code survey1_code
 			keep survey1_code inc_mo 
@@ -103,7 +103,7 @@
 			sa `bl'
 			
 			* Endline data
-			u "${repldir}/Data/01_base/survey_data/endline_round1_noPII.dta",clear
+			u "${repldir}/data/01_base/survey_data/endline_round1_noPII.dta",clear
 			keep if tot_complete==1
 			cap drop _merge
 			
@@ -166,7 +166,7 @@
 	
 		preserve
 			* Baseline data
-			u "${repldir}/Data/01_base/survey_data/baseline_noPII.dta",clear
+			u "${repldir}/data/01_base/survey_data/baseline_noPII.dta",clear
 			keep if tot_complete==1
 			ren code survey1_code
 			
@@ -260,7 +260,7 @@
 			sa `bl'
 			
 			* Endline data
-			u "${repldir}/Data/01_base/survey_data/endline_round1_noPII.dta",clear
+			u "${repldir}/data/01_base/survey_data/endline_round1_noPII.dta",clear
 			keep if tot_complete==1
 			cap drop _merge
 			

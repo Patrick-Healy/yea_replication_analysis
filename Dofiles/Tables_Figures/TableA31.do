@@ -3,7 +3,7 @@
 * Table A31 *
 *************
 
-	use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+	use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 	
 	global RI_ON = 0
 	
@@ -18,7 +18,7 @@
 	replace nb_visit_post_carto = . if visit_post_carto==.
 	
 	preserve
-		u "${repldir}/Data/01_base/admin_data/chief_tribe_info.dta",clear
+		u "${repldir}/data/01_base/admin_data/chief_tribe_info.dta",clear
 		keep a7 chef_*tribe col1_*tribe col2_*tribe *_y36
 		duplicates drop
 		tempfile col_tribe

@@ -1,6 +1,6 @@
 
 	
-	use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+	use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 	
 	cap drop visit_post_carto
 	gen visit_post_carto=0 if visited==0 | (visits!=0 & visits!=.)
@@ -32,7 +32,7 @@
 	* Keep chiefs who work in multiple polygons
 	
 		preserve
-			u "${repldir}/Data/01_base/admin_data/campaign_collector_info.dta",clear
+			u "${repldir}/data/01_base/admin_data/campaign_collector_info.dta",clear
 			keep a7 chief_code1 chief_code2
 			tempfile poly_col
 			sa `poly_col'
@@ -102,7 +102,7 @@
 	* Keep chiefs who work in multiple polygons and months - keep only those in second month
 	
 		preserve
-			u "${repldir}/Data/01_base/admin_data/campaign_collector_info.dta",clear
+			u "${repldir}/data/01_base/admin_data/campaign_collector_info.dta",clear
 			keep a7 Month chief_code1 chief_code2
 			tempfile poly_col
 			sa `poly_col'
@@ -169,7 +169,7 @@
 	* Keep Central collectors who are working for first time
 	
 		preserve
-			u "${repldir}/Data/01_base/admin_data/campaign_collector_info.dta",clear
+			u "${repldir}/data/01_base/admin_data/campaign_collector_info.dta",clear
 			keep a7 Month col_code_1 col_code_2
 			tempfile poly_col
 			sa `poly_col'
@@ -252,7 +252,7 @@
 		
 	* Table interaction with time
 	
-		use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+		use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 		
 		keep if tmt==1|tmt==2|tmt==3
 	
@@ -317,7 +317,7 @@
 		
 	* CLI Exposure
 	
-		use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+		use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 			
 		keep if tmt==1|tmt==2|tmt==3
 		
@@ -351,7 +351,7 @@
 			
 			* Keep Central collectors who are working in CLI in month 2
 			preserve
-				u "${repldir}/Data/01_base/admin_data/campaign_collector_info.dta",clear
+				u "${repldir}/data/01_base/admin_data/campaign_collector_info.dta",clear
 				keep a7 Month col_code_1 col_code_2
 				tempfile poly_col
 				sa `poly_col'
@@ -424,7 +424,7 @@
 			
 			* Keep Central collectors who are working in CLI in month 2
 			preserve
-				u "${repldir}/Data/01_base/admin_data/campaign_collector_info.dta",clear
+				u "${repldir}/data/01_base/admin_data/campaign_collector_info.dta",clear
 				keep a7 Month col_code_1 col_code_2
 				tempfile poly_col
 				sa `poly_col'
@@ -496,7 +496,7 @@
 			
 			* Keep Central collectors who are working in CLI in month 2
 			preserve
-				u "${repldir}/Data/01_base/admin_data/campaign_collector_info.dta",clear
+				u "${repldir}/data/01_base/admin_data/campaign_collector_info.dta",clear
 				keep a7 Month col_code_1 col_code_2
 				tempfile poly_col
 				sa `poly_col'

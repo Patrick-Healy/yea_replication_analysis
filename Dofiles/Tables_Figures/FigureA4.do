@@ -17,10 +17,10 @@ if "$user"=="augy" {
 *************************************
 
 * Clean Data
-use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 
 * merge collector code information from polygon level dataset
-merge m:1 a7 using "${repldir}/Data/01_base/admin_data/campaign_collector_info.dta", keep(match)
+merge m:1 a7 using "${repldir}/data/01_base/admin_data/campaign_collector_info.dta", keep(match)
 
 * state collector code
 levelsof col1_colcode if tmt==1 | tmt==3 | tmt==4, local(col1)
@@ -29,7 +29,7 @@ local col: list col1| col2
 	
 * Keep characteristics of all state collectors
 foreach c of local col{
-use "${repldir}/Data/01_base/survey_data/collector_baseline_noPII.dta", clear
+use "${repldir}/data/01_base/survey_data/collector_baseline_noPII.dta", clear
 keep if tot_complete == 1
 keep if col_type==1 & colcode==`c'
 tempfile col_`c'
@@ -63,10 +63,10 @@ save `state_col'
 ******************************************************************
 
 * Clean Data
-use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 
 * merge with collector code and characteristics
-merge m:1 a7 using "${repldir}/Data/01_base/admin_data/campaign_collector_info.dta", keep(match)
+merge m:1 a7 using "${repldir}/data/01_base/admin_data/campaign_collector_info.dta", keep(match)
 keep if tmt==1
 cap drop _merge
 merge m:1 col1_colcode using `state_col', force keepusing(educ_yrs educ_lvl possessions_nb)
@@ -125,10 +125,10 @@ collapse (mean) taxes_paid possessions_nb educ_lvl educ_yrs, by(a7)
 *************************************
 
 * Clean Data
-use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 
 * merge collector code information from neighborhood level dataset
-merge m:1 a7 using "${repldir}/Data/01_base/admin_data/campaign_collector_info.dta", keep(match) nogen
+merge m:1 a7 using "${repldir}/data/01_base/admin_data/campaign_collector_info.dta", keep(match) nogen
 
 * chief collector code
 levelsof col1_chef_code if tmt==2, local(chef1)
@@ -137,7 +137,7 @@ local chef: list chef1| chef2
 
 * Keep characteristics of all chiefs collectors
 foreach c of local chef{
-use "${repldir}/Data/01_base/survey_data/collector_baseline_noPII.dta", clear
+use "${repldir}/data/01_base/survey_data/collector_baseline_noPII.dta", clear
 keep if tot_complete == 1
 keep if col_type==2 & chef_code==`c'
 tempfile chef_`c'
@@ -154,7 +154,7 @@ drop code
 rename chef_code code
 
 * merge missing info from chief collector survey: education and possessions
-merge 1:1 code using "${repldir}/Data/01_base/survey_data/chief_survey_noPII.dta", ///
+merge 1:1 code using "${repldir}/data/01_base/survey_data/chief_survey_noPII.dta", ///
 keepusing(edu edu2 possessions_1 possessions_2 possessions_3 possessions_4 possessions_5 possessions_6 possessions_0) update replace 
 keep if _merge>2
 	
@@ -178,10 +178,10 @@ tempfile chief_col
 save `chief_col'
 	
 	* Local Collectors
-	use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+	use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 	
 	* merge collector information from polygon level dataset
-	merge m:1 a7 using "${repldir}/Data/01_base/admin_data/campaign_collector_info.dta", keep(match)
+	merge m:1 a7 using "${repldir}/data/01_base/admin_data/campaign_collector_info.dta", keep(match)
 	keep if tmt==2
 	cap drop _merge
 	gen chief_code=col1_chef_code if tmt==2
@@ -192,7 +192,7 @@ save `chief_col'
 	
 	*Merge chief knowledge information (from knowledge test)
 	cap drop _m
-	merge m:1 a7 using "${repldir}/Data/01_base/survey_data/chief_knowledge_neighborhoods.dta", nogen keep(1 3)
+	merge m:1 a7 using "${repldir}/data/01_base/survey_data/chief_knowledge_neighborhoods.dta", nogen keep(1 3)
 
 	* Collpase at the neighborhood level 
 	collapse (mean) taxes_paid  possessions_nb educ_lvl educ_yrs, by(a7) 

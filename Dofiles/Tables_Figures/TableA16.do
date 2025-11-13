@@ -7,7 +7,7 @@
 * Prepare datasets *
 ********************
 
-	use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+	use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 	
 	keep if tmt==1 | tmt==2 | tmt==3
 	
@@ -71,7 +71,7 @@
 		ren edu2 edu2_ml
 		
 				preserve
-					use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+					use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 					collapse (max) tmt stratum,by(a7)
 					g treatment = tmt
 					tempfile tmt
@@ -82,7 +82,7 @@
 	
 		preserve
 			* Baseline data
-			u "${repldir}/Data/01_base/survey_data/baseline_noPII.dta",clear
+			u "${repldir}/data/01_base/survey_data/baseline_noPII.dta",clear
 			keep if tot_complete==1
 			ren code survey1_code
 			
@@ -179,7 +179,7 @@
 			sa `bl'
 			
 			* Endline data
-			u "${repldir}/Data/01_base/survey_data/endline_round1_noPII.dta",clear
+			u "${repldir}/data/01_base/survey_data/endline_round1_noPII.dta",clear
 			keep if tot_complete==1
 			cap drop _merge
 			

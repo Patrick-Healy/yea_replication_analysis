@@ -1,6 +1,6 @@
 
 
-use "${repldir}/Data/01_base/admin_data/tax_payments_noPII.dta", clear
+use "${repldir}/data/01_base/admin_data/tax_payments_noPII.dta", clear
 duplicates tag compound1, gen(dup_compund1) 
 drop if dup_compund1==1
 drop if compound1==. 
@@ -8,9 +8,9 @@ tempfile full
 save `full'
 
 use `full', clear
-merge 1:m compound1 using "${repldir}/Data/01_base/admin_data/tax_payment_timing_noPII.dta", keepusing(hours minutes seconds hours_minutes_seconds) keep(match) force 
+merge 1:m compound1 using "${repldir}/data/01_base/admin_data/tax_payment_timing_noPII.dta", keepusing(hours minutes seconds hours_minutes_seconds) keep(match) force 
 drop _merge
-merge m:1 a7 using "${repldir}/Data/02_intermediate/assignment.dta" 
+merge m:1 a7 using "${repldir}/data/02_intermediate/assignment.dta" 
 
 drop if hours_minutes_seconds==0
 twoway (kdensity hours_minutes_seconds if tmt==1) (kdensity hours_minutes_seconds if tmt==2) (kdensity hours_minutes_seconds if tmt==3) (kdensity hours_minutes_seconds if tmt==4), ///
@@ -29,7 +29,7 @@ graph export "$reploutdir/time_collection_CvLvCLI.pdf", replace
 
 preserve
 
-	use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+	use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 	
 	keep if tmt==1 | tmt==2 | tmt==3
 	

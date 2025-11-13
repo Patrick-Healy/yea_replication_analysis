@@ -3,7 +3,7 @@
 * Table A26 *
 *************
 
-	use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+	use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 	
 // CvL Compliance and revenues - Figures and Tables
 		

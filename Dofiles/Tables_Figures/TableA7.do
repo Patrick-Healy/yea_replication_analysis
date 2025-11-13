@@ -7,7 +7,7 @@
 * Prepare Data *
 ****************
 
-use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 				
 **********************************
 * Machine Learning and distances * 
@@ -15,7 +15,7 @@ use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
 
 	preserve
 		* Use final Machine Learning data
-		insheet using "${repldir}/Data/01_base/admin_data/property_values_MLestimates.csv", clear
+		insheet using "${repldir}/data/01_base/admin_data/property_values_MLestimates.csv", clear
 		keep compound1 pred_value dist_*
 		drop if compound1==.
 		rename compound1 compound_code
@@ -34,7 +34,7 @@ use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
 **********************************	
 
 	preserve
-		use "${repldir}/Data/03_clean_combined/combined_data.dta",clear
+		use "${repldir}/data/03_clean_combined/combined_data.dta",clear
 		keep if pilot==1
 		ren compound1 compound_code
 		g t_l = tmt==2
@@ -74,7 +74,7 @@ use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
 
 	preserve
 			* Baseline data
-			u "${repldir}/Data/01_base/survey_data/baseline_noPII.dta",clear
+			u "${repldir}/data/01_base/survey_data/baseline_noPII.dta",clear
 			keep if tot_complete==1
 			ren code survey1_code
 			
@@ -168,7 +168,7 @@ use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
 			sa `bl'
 			
 			* Endline data
-			u "${repldir}/Data/01_base/survey_data/endline_round1_noPII.dta",clear
+			u "${repldir}/data/01_base/survey_data/endline_round1_noPII.dta",clear
 			keep if tot_complete==1
 			cap drop _merge
 			

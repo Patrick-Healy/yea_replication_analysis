@@ -4,7 +4,7 @@
 ************
 
 * Clean data for analysis
-use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 
 * Define FE
 sum today_alt
@@ -17,7 +17,7 @@ egen time_FE_tdm_2mo_LvCLI = cut(today_alt),at(21370.5 21430.5 21490.5 21522) ic
 egen time_FE_tdm_2mo_CvLvCLI = cut(today_alt),at(21363.6 21423.6 21483.6 21524.3) icodes
 
 	preserve
-		u "${repldir}/Data/01_base/admin_data/chief_tribe_info.dta",clear
+		u "${repldir}/data/01_base/admin_data/chief_tribe_info.dta",clear
 		keep a7 chef_*tribe col1_*tribe col2_*tribe *_y36
 		duplicates drop
 		tempfile col_tribe

@@ -32,6 +32,9 @@
 		// Output
 		global reploutdir "${stem}/Output"
 
+		// Create output directory if it doesn't exist
+		cap mkdir "${reploutdir}"
+
 * 4. Run replication files
 
 	do "$repldodir/1_Package_Setup.do"

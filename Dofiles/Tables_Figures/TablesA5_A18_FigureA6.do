@@ -6,7 +6,7 @@
 * Table A5 Panel A and Figure 6 Panel A *
 *****************************************
 
-	use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+	use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 	keep if tmt==1 | tmt==2 | tmt==3
 	
 	* Tax effects table
@@ -43,7 +43,7 @@
 		
 			// Create graph and find median
 				preserve
-					use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+					use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 					keep if tmt==1 | tmt==2 | tmt==3
 					
 					* Define FE
@@ -186,7 +186,7 @@
 * Table A5 Panel B and Figure 6 Panel B *
 *****************************************	
 		
-	use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+	use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 	keep if tmt==1 | tmt==2 | tmt==3
 		
 	* Tax effects table
@@ -219,7 +219,7 @@
 		
 			// Create graph and find median
 				preserve
-					use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+					use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 					keep if tmt==1 | tmt==2 | tmt==3
 					
 					* Define FE
@@ -362,7 +362,7 @@
 * Table A18 Panel A and Figure 6 Panel C *
 ******************************************
 
-	use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+	use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 	keep if tmt==1 | tmt==2 | tmt==3
 	
 	* Tax effects table
@@ -398,7 +398,7 @@
 		
 			// Create graph and find median
 				preserve
-					use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+					use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 					keep if tmt==1 | tmt==2 | tmt==3
 					
 					* Define FE
@@ -542,7 +542,7 @@
 * Table A18 Panel B and Figure 6 Panel D *
 ******************************************		
 		
-	use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+	use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 	keep if tmt==1 | tmt==2 | tmt==3
 		
 	* Tax effects table
@@ -575,7 +575,7 @@
 		
 			// Create graph and find median
 				preserve
-					use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+					use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 					keep if tmt==1 | tmt==2 | tmt==3
 					
 					* Define FE

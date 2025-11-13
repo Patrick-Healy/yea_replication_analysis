@@ -5,7 +5,7 @@
 ***********************************************
 
 
-use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 
 
 keep if inlist(tmt, 1, 2)
@@ -35,7 +35,7 @@ bysort a7: egen total_bonus = sum(bonus_amt)
 
 preserve
 collapse tmt, by(a7)
-merge 1:1 a7 using "${repldir}/Data/01_base/admin_data/neighborhood_transport_cost.dta"
+merge 1:1 a7 using "${repldir}/data/01_base/admin_data/neighborhood_transport_cost.dta"
 keep if tmt==1|tmt==2
 egen total_transport_c = sum(transport) if tmt==1
 sum total_transport_c

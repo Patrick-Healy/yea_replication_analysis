@@ -4,7 +4,7 @@
 	
 	// CvCLI Compliance and revenues
 
-	use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+	use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 	
 	keep if tmt==1 | tmt==2 | tmt==3
 	

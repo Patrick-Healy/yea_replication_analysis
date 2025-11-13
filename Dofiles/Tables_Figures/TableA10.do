@@ -7,7 +7,7 @@
 * Prepare datasets *
 ********************
 
-use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 	
 	preserve
 		collapse (max) tmt (min) today_alt,by(a7)
@@ -23,7 +23,7 @@ use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
 	restore
 	
 	preserve
-		insheet using "${repldir}/Data/01_base/admin_data/adjacent_neighborhoods.csv",clear names
+		insheet using "${repldir}/data/01_base/admin_data/adjacent_neighborhoods.csv",clear names
 		destring nbr_poly_nm src_poly_nm length,replace ignore(",")
 		replace length = length/1000
 		merge m:1 nbr_poly_nm using `tmt' // 1 non-matching (non-adjacent?): 574

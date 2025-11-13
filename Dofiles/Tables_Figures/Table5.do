@@ -6,7 +6,7 @@
 * Panels A and B *
 ******************
 
-	use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+	use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 	keep if tmt==1 | tmt==2 | tmt==3
 
 	* Outcomes
@@ -60,7 +60,7 @@
 	sa `midline'
 		
 	* Merge endline not on compound code
-		use "${repldir}/Data/01_base/survey_data/endline_round1_noPII.dta", clear
+		use "${repldir}/data/01_base/survey_data/endline_round1_noPII.dta", clear
 		keep if tot_complete==1 
 		replace compound_code=compound_code_prev if (compound_code_prev!=. & compound_code_prev!=3)
 		rename compound_code compound1
@@ -99,7 +99,7 @@
 			cap drop treatment
 			
 			preserve
-				use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+				use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 				collapse (max) tmt stratum,by(a7)
 				ren tmt treatment
 				tempfile tmt
@@ -189,7 +189,7 @@ di "Central mean:`centralmean'"
 **********************
 
 	* merge endline and baseline surveys
-	use "${repldir}/Data/01_base/survey_data/endline_round1_noPII.dta", clear
+	use "${repldir}/data/01_base/survey_data/endline_round1_noPII.dta", clear
 	keep if tot_complete==1 
 	replace compound_code=compound_code_prev if (compound_code_prev!=. & compound_code_prev!=3)
 	rename compound_code compound1
@@ -296,7 +296,7 @@ di "Central mean:`centralmean'"
 
 	* Get baseline variables
 
-	use "${repldir}/Data/01_base/survey_data/baseline_noPII.dta", clear
+	use "${repldir}/data/01_base/survey_data/baseline_noPII.dta", clear
 	keep if tot_complete==1 
 	cap drop _merge
 	
@@ -374,7 +374,7 @@ di "Central mean:`centralmean'"
 	cap drop treatment
 	
 	preserve
-		use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+		use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 		collapse (max) tmt stratum,by(a7)
 		ren tmt treatment
 		tempfile tmt

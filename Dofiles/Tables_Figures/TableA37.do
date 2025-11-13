@@ -3,7 +3,7 @@
 * Table A37 *
 *************
 
-	use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+	use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 	
 	keep if tmt==1 | tmt==2 | tmt==3
 	
@@ -70,7 +70,7 @@
 		preserve
 			
 			* merge endline and baseline surveys
-				u "${repldir}/Data/01_base/survey_data/endline_round1_noPII.dta",clear
+				u "${repldir}/data/01_base/survey_data/endline_round1_noPII.dta",clear
 				keep if tot_complete==1
 				
 				* Replace compound code with previous compound code
@@ -201,7 +201,7 @@
 				* Get baseline variables**
 				**************************
 
-				u "${repldir}/Data/01_base/survey_data/baseline_noPII.dta",clear
+				u "${repldir}/data/01_base/survey_data/baseline_noPII.dta",clear
 				keep if tot_complete==1 
 				cap drop _merge
 				

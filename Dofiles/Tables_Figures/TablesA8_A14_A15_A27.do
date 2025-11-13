@@ -27,7 +27,7 @@ bribe_chief_worried_sanctions_col4-6.tex - Table A14
 
 * Extract chief survey variables
 	
-use "${repldir}/Data/01_base/survey_data/chief_survey_noPII.dta", clear
+use "${repldir}/data/01_base/survey_data/chief_survey_noPII.dta", clear
 
 ren age age_chef	
 	
@@ -81,10 +81,10 @@ save `chef_chars'
 
 		
 * Clean Data
-use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 
 * merge collector information from polygon level dataset
-merge m:1 a7 using  "${repldir}/Data/01_base/admin_data/campaign_collector_info.dta", keep(match) nogen
+merge m:1 a7 using  "${repldir}/data/01_base/admin_data/campaign_collector_info.dta", keep(match) nogen
 
 * chief collector code
 levelsof col1_chef_code if tmt==2, local(chef1)
@@ -93,7 +93,7 @@ local chef: list chef1| chef2
 
 	* Keep all chiefs collectors
 	foreach c of local chef{
-	use "${repldir}/Data/01_base/survey_data/collector_baseline_noPII.dta", clear
+	use "${repldir}/data/01_base/survey_data/collector_baseline_noPII.dta", clear
 	keep if tot_complete == 1
 	keep if col_type==2 & chef_code==`c'
 	tempfile chef_`c'
@@ -146,10 +146,10 @@ local chef: list chef1| chef2
 **********************
 	
 * Clean Data
-use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 
 * merge collector information from polygon level dataset
-merge m:1 a7 using "${repldir}/Data/01_base/admin_data/campaign_collector_info.dta", keep(match)
+merge m:1 a7 using "${repldir}/data/01_base/admin_data/campaign_collector_info.dta", keep(match)
 
 	* DGRKOC collector code
 	levelsof col1_colcode if tmt==1 | tmt==3 | tmt==4, local(col1)
@@ -158,7 +158,7 @@ merge m:1 a7 using "${repldir}/Data/01_base/admin_data/campaign_collector_info.d
 	
 	* Keep all central collectors
 	foreach c of local col{
-	use "${repldir}/Data/01_base/survey_data/collector_baseline_noPII.dta", clear
+	use "${repldir}/data/01_base/survey_data/collector_baseline_noPII.dta", clear
 	keep if tot_complete == 1
 	keep if col_type==1 & colcode==`c'
 	tempfile col_`c'
@@ -218,9 +218,9 @@ merge m:1 a7 using "${repldir}/Data/01_base/admin_data/campaign_collector_info.d
 	* Add data together *
 	*********************
 	
-	use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+	use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 	
-	merge m:1 a7 using "${repldir}/Data/01_base/admin_data/campaign_collector_info.dta", keep(match)
+	merge m:1 a7 using "${repldir}/data/01_base/admin_data/campaign_collector_info.dta", keep(match)
 	cap drop _merge
 	
 	* central
@@ -258,7 +258,7 @@ merge m:1 a7 using "${repldir}/Data/01_base/admin_data/campaign_collector_info.d
 	
 	preserve
 	
-	use "${repldir}/Data/01_base/admin_data/chief_collector_candidates_campaignupdated.dta", clear
+	use "${repldir}/data/01_base/admin_data/chief_collector_candidates_campaignupdated.dta", clear
 	keep if rankpop==1
 	keep a7 rankpop code
 	tempfile top_chefs
@@ -279,7 +279,7 @@ merge m:1 a7 using "${repldir}/Data/01_base/admin_data/campaign_collector_info.d
 	replace educ_yrs = educ_yrs_chef if tmt==2|tmt==4
 		
 	* Distance from city center 
-	merge m:1 compound1 using "${repldir}/Data/01_base/admin_data/hh_distances.dta", keepusing(dist_city_center) nogen
+	merge m:1 compound1 using "${repldir}/data/01_base/admin_data/hh_distances.dta", keepusing(dist_city_center) nogen
 	
 	* Remoteness
 		global remoteness "dist_city_center"
@@ -317,7 +317,7 @@ merge m:1 a7 using "${repldir}/Data/01_base/admin_data/campaign_collector_info.d
 	preserve
 	
 	
-		u "${repldir}/Data/01_base/survey_data/baseline_noPII.dta",clear
+		u "${repldir}/data/01_base/survey_data/baseline_noPII.dta",clear
 		keep if tot_complete==1
 		ren code survey1_code
 		
@@ -426,7 +426,7 @@ merge m:1 a7 using "${repldir}/Data/01_base/admin_data/campaign_collector_info.d
 	// Chefferies
 	
 	cap drop _merge
-	merge m:1 a7 using "${repldir}/Data/02_intermediate/concessions_chefferies.dta"
+	merge m:1 a7 using "${repldir}/data/02_intermediate/concessions_chefferies.dta"
 	ren chefferie chefferie_type
 	g chefferie = chefferie_type!=""
 	replace chefferie = 0 if strmatch(chefferie_type,"*cession*")

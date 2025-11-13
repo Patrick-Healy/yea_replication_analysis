@@ -12,7 +12,7 @@
 *****************
 
 	* use clean baseline data 
-	use "${repldir}/Data/01_base/survey_data/baseline_noPII.dta", clear
+	use "${repldir}/data/01_base/survey_data/baseline_noPII.dta", clear
 	keep if tot_complete==1 
 	drop possessions
 
@@ -74,7 +74,7 @@
 ****************
 
 	* Use clean endline data 
-	use "${repldir}/Data/01_base/survey_data/endline_round1_noPII.dta", clear
+	use "${repldir}/data/01_base/survey_data/endline_round1_noPII.dta", clear
 	keep if tot_complete==1 
 	replace compound_code=compound_code_prev if (compound_code_prev!=. & compound_code_prev!=3)
 	keep compound_code code a7 bribe bribe_amt o_pay2 paid_vehicletax_survey_e paid_mktvendorfee_survey_e paid_businessfee_survey_e paid_incometax_survey_e paid_faketax_survey_e corr14_end tax42 trust3_survey_e trust2_survey_e trust6_survey_e steal_gov_2018 steal_col_2018 fair_tax fair_rates fair_collectors liquidity_bind liquidity_bind_date* cash_fee cash_fee_month cash_fee_month2* message1 message2 message3 message4 message5 message6 message7 message8 message9 inc_mo transport
@@ -95,7 +95,7 @@
 **********************************
 
 	* Use final Machine Learning data
-	insheet using "${repldir}/Data/01_base/admin_data/property_values_MLestimates.csv", clear
+	insheet using "${repldir}/data/01_base/admin_data/property_values_MLestimates.csv", clear
 	keep compound1 pred_value dist_*
 	drop if compound1==.
 	rename compound1 compound_code
@@ -107,7 +107,7 @@
 *****************
 	
 	* Use clean combined data
-	use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+	use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 	rename compound1 compound_code
 	
 	// House quality
@@ -175,7 +175,7 @@ drop _merge
 
 preserve
 		
-			use "${repldir}/Data/01_base/survey_data/endline_2016campaign_noPII.dta",clear
+			use "${repldir}/data/01_base/survey_data/endline_2016campaign_noPII.dta",clear
 			keep a7 program commune stratum paid_receipt_union paid_amt_admin
 			ren program jontax
 			ren stratum stratum_jon
@@ -229,11 +229,11 @@ preserve
 	preserve
 	
 		* Start with Pablo data to get chef "domains" by polygon (don't necessarily align with chef polygon-code)
-		u "${repldir}/Data/01_base/admin_data/chief_collector_candidates.dta",clear
+		u "${repldir}/data/01_base/admin_data/chief_collector_candidates.dta",clear
 		keep if rankpop<=5 // Keep top 5 ranked chefs
 		cap drop _merge
 		
-		merge m:1 code using "${repldir}/Data/01_base/survey_data/chief_survey_randbasis_noPII.dta",gen(_mergechef) ///
+		merge m:1 code using "${repldir}/data/01_base/survey_data/chief_survey_randbasis_noPII.dta",gen(_mergechef) ///
 			keepusing(edu inc_mo state_cap1 collect_ever)
 		drop if _mergechef!=3 // 8 observations
 		drop _merge*
@@ -258,7 +258,7 @@ preserve
 	
 	// Other compliance measure
 	preserve
-		u "${repldir}/Data/01_base/admin_data/tax_payments_neighborhoods.dta",clear
+		u "${repldir}/data/01_base/admin_data/tax_payments_neighborhoods.dta",clear
 		
 		// Fix polygon for spilts
 				expand 3 if a7==609,g(exp)
@@ -300,7 +300,7 @@ preserve
 	
 // Rouge
 
-merge m:1 a7 using "${repldir}/Data/01_base/admin_data/randomization_assignment.dta",keepusing(rouge)
+merge m:1 a7 using "${repldir}/data/01_base/admin_data/randomization_assignment.dta",keepusing(rouge)
 
 	egen time_FE_tdm_2mo_CvL = cut(today_alt),at(21355 21415 21475 21532) icodes
 	egen time_FE_tdm_2mo_CvCLI = cut(today_alt),at(21365.5 21425.5 21485.5 21519) icodes

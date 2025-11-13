@@ -1,18 +1,18 @@
 
 * Use clean data
-use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 drop age
 drop edu*
 
 * merge polygon level dataset
-merge m:1 a7 using  "${repldir}/Data/01_base/admin_data/campaign_collector_info.dta", keepusing(col1_colcode col2_colcode) nogen
+merge m:1 a7 using  "${repldir}/data/01_base/admin_data/campaign_collector_info.dta", keepusing(col1_colcode col2_colcode) nogen
 
 * keep central tax collection neighborhoods
 keep if tmt==1 | tmt==3
 
 * Merge chars of first state collector
 rename col1_colcode colcode
-merge m:1 colcode using "${repldir}/Data/01_base/survey_data/collector_chars.dta", keepusing(age educ_yrs inc_mo) 
+merge m:1 colcode using "${repldir}/data/01_base/survey_data/collector_chars.dta", keepusing(age educ_yrs inc_mo) 
 drop if _merge ==2
 drop _merge
 rename (age educ_yrs inc_mo) (age_col1 educ_yrs_col1 inc_mo_col1)
@@ -20,7 +20,7 @@ rename colcode col1_colcode
 
 * Merge chars of second state collector
 rename col2_colcode colcode
-merge m:1 colcode using "${repldir}/Data/01_base/survey_data/collector_chars.dta", keepusing(age educ_yrs inc_mo) 
+merge m:1 colcode using "${repldir}/data/01_base/survey_data/collector_chars.dta", keepusing(age educ_yrs inc_mo) 
 drop if _merge ==2
 drop _merge
 rename (age educ_yrs inc_mo) (age_col2 educ_yrs_col2 inc_mo_col2)
@@ -28,7 +28,7 @@ rename colcode col2_colcode
 
 preserve 
 
-use "${repldir}/Data/01_base/survey_data/collector_chars.dta", clear
+use "${repldir}/data/01_base/survey_data/collector_chars.dta", clear
 
 su age, d
 local median_age=`r(p50)'

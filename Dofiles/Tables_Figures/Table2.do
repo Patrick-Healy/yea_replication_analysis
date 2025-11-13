@@ -5,7 +5,7 @@
 mat define T2 = J(2,5,.)
 
 * Treatment counts
-use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 bys a7: egen temp_rank = rank(compound1),unique // number of neighborhoods
 replace tmt = 5 if tmt==0 // control
 forval i = 1(1)5{

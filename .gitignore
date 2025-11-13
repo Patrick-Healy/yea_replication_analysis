@@ -1,0 +1,61 @@
+# Stata temporary and log files
+*.stswp
+*.log
+*.smcl
+*.dta~
+*.gph
+~*.tmp
+
+# Stata lock files
+*.stlck
+
+# Output directories (created during execution)
+Output/
+output/
+
+# Data directories (user-supplied, not in repo)
+data/
+Data/
+
+# OS-specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*~
+
+# IDE and editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.Rproj.user
+
+# R-related files (if used)
+.Rhistory
+.RData
+.Rapp.history
+
+# Python-related files (if used)
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints/
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Compressed files
+*.zip
+*.tar.gz
+*.rar
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite

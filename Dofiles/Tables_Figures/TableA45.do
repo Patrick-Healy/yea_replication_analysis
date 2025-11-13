@@ -4,7 +4,7 @@
 *************
 
 	* Use Clean dataset
-	use "${repldir}/Data/03_clean_combined/combined_data.dta", clear
+	use "${repldir}/data/03_clean_combined/combined_data.dta", clear
 	gen n=1
 	gen n_periph=1 if house==1
 	gen n_mm=1 if house==2
@@ -40,7 +40,7 @@
 	collapse (rawsum)taxes_paid_amt taxes_paid_amt_periph taxes_paid_amt_mm bonus_amt bonus_amt_periph bonus_amt_mm visit_post_carto nb_visit_post_carto n n_periph n_mm (max) month stratum tmt, by(a7)
 	
 	* Merge with transport costs per polygon
-	merge 1:1 a7 using "${repldir}/Data/01_base/admin_data/neighborhood_transport_cost.dta" 
+	merge 1:1 a7 using "${repldir}/data/01_base/admin_data/neighborhood_transport_cost.dta" 
 		
 	* Check problems with merge
 	br if _merge==2
@@ -53,21 +53,21 @@
 	drop _merge
 	
 	* Merge with timing per polygon
-	merge 1:1 a7 using "${repldir}/Data/03_clean_combined/analysis_data_neighborhoods.dta"
+	merge 1:1 a7 using "${repldir}/data/03_clean_combined/analysis_data_neighborhoods.dta"
 		drop _merge
 	
 	// Bribes
 			
 		* Bribe variables
 		preserve
-			use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+			use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 			g counter = 1 if bribe_combined!=.
 			collapse (sum) bribe_combined_amt n_svyd_ml = counter (count) n_prop = compound1,by(a7)
 			tempfile ml_bribes
 			sa `ml_bribes'
 		restore
 		preserve
-			u "${repldir}/Data/01_base/survey_data/endline_round1_noPII.dta",clear
+			u "${repldir}/data/01_base/survey_data/endline_round1_noPII.dta",clear
 			keep if tot_complete==1 
 			replace compound_code=compound_code_prev if (compound_code_prev!=. & compound_code_prev!=3)
 			rename compound_code compound1

@@ -19,10 +19,10 @@ bribe_chief_worried_sanctions_cols1-3 - Table A14
 *****************
 
 	
-use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 
 * merge collector information from polygon level dataset
-merge m:1 a7 using  "${repldir}/Data/01_base/admin_data/campaign_collector_info.dta", keep(match) nogen
+merge m:1 a7 using  "${repldir}/data/01_base/admin_data/campaign_collector_info.dta", keep(match) nogen
 keep a7 tmt tmt_2016 col1_chef_code col2_chef_code col1_colcode col2_colcode
 duplicates drop
 drop if tmt==.
@@ -62,10 +62,10 @@ restore
 **********************
 	
 * Clean Data
-use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 
 * merge collector information from polygon level dataset
-merge m:1 a7 using  "${repldir}/Data/01_base/admin_data/campaign_collector_info.dta", keep(match) nogen
+merge m:1 a7 using  "${repldir}/data/01_base/admin_data/campaign_collector_info.dta", keep(match) nogen
 
 * chief collector code
 levelsof col1_chef_code if tmt==2, local(chef1)
@@ -75,7 +75,7 @@ di `chef'
 
 	* Keep all chiefs collectors
 	foreach c of local chef{
-	use "${repldir}/Data/01_base/survey_data/collector_baseline_noPII.dta", clear
+	use "${repldir}/data/01_base/survey_data/collector_baseline_noPII.dta", clear
 	keep if tot_complete == 1
 	keep if col_type==2 & chef_code==`c'
 	tempfile chef_`c'
@@ -94,7 +94,7 @@ di `chef'
 	replace code=colcode if code==.
 	* merge missing info from chief collector survey 
 	* educ, inc, possessions, trsut4, trust5, trust6, state_cap1, gov_resp, revcorr14_end
-	merge 1:1 code using "${repldir}/Data/01_base/survey_data/chief_survey_noPII.dta", ///
+	merge 1:1 code using "${repldir}/data/01_base/survey_data/chief_survey_noPII.dta", ///
 	keepusing(a7 edu edu2 inc_mo possessions_1 possessions_2 possessions_3 possessions_4 possessions_5 possessions_6 possessions_0 trust4 trust5 trust6 trust7 state_cap1 gov_resp corr14_end sex age kga_born tax_who1 tax_who2 tax_who3 tax_who4 tax_who5 tax_who6 tax_who7 appoint_yr other_job2 gov1_end party party_which tax8 fire_num collect_ever tribe chef_type chef_fam) update replace 
 	keep if _merge>2
 	drop _merge
@@ -154,10 +154,10 @@ replace chef_locality=0 if chef_type==1|chef_type==7
 ***** Endline Data
 	
 * Clean Data
-use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 
 * merge collector information from polygon level dataset
-merge m:1 a7 using  "${repldir}/Data/01_base/admin_data/campaign_collector_info.dta", keep(match) nogen
+merge m:1 a7 using  "${repldir}/data/01_base/admin_data/campaign_collector_info.dta", keep(match) nogen
 
 * chief collector code
 levelsof col1_chef_code if tmt==2, local(chef1)
@@ -167,7 +167,7 @@ di `chef'
 
 	* Keep all chiefs collectors
 	foreach c of local chef{
-	use "${repldir}/Data/01_base/survey_data/collector_endline_noPII.dta", clear
+	use "${repldir}/data/01_base/survey_data/collector_endline_noPII.dta", clear
 	keep if tot_complete == 1
 	keep if col_type==2 & chef_code==`c'
 	tempfile chef_`c'
@@ -185,7 +185,7 @@ di `chef'
 	rename chef_code code
 	replace code=colcode if code==.
 
-	merge 1:1 code using "${repldir}/Data/01_base/survey_data/chief_survey_noPII.dta", ///
+	merge 1:1 code using "${repldir}/data/01_base/survey_data/chief_survey_noPII.dta", ///
 	keepusing(a7 edu edu2 inc_mo possessions_1 possessions_2 possessions_3 possessions_4 possessions_5 possessions_6 possessions_0 gov_resp corr14_end sex age kga_born tax_who1 tax_who2 tax_who3 tax_who4 tax_who5 tax_who6 tax_who7 appoint_yr other_job2 gov1_end party party_which tax8 fire_num collect_ever tribe chef_type chef_fam) update replace 
 	keep if _merge>2
 	drop _merge
@@ -206,10 +206,10 @@ di `chef'
 
 ***** Baseline
 
-use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 
 * merge collector information from polygon level dataset
-merge m:1 a7 using  "${repldir}/Data/01_base/admin_data/campaign_collector_info.dta", keep(match)
+merge m:1 a7 using  "${repldir}/data/01_base/admin_data/campaign_collector_info.dta", keep(match)
 
 	* DGRKOC collector code
 	levelsof col1_colcode if tmt==1 | tmt==3 | tmt==4, local(col1)
@@ -218,7 +218,7 @@ merge m:1 a7 using  "${repldir}/Data/01_base/admin_data/campaign_collector_info.
 	
 	* Keep all central collectors
 	foreach c of local col{
-	use "${repldir}/Data/01_base/survey_data/collector_baseline_noPII.dta", clear
+	use "${repldir}/data/01_base/survey_data/collector_baseline_noPII.dta", clear
 	keep if tot_complete == 1
 	keep if col_type==1 & colcode==`c'
 	tempfile col_`c'
@@ -256,10 +256,10 @@ merge m:1 a7 using  "${repldir}/Data/01_base/admin_data/campaign_collector_info.
 ****** Endline
 	
 * Clean Data
-use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 
 * merge collector information from polygon level dataset
-merge m:1 a7 using  "${repldir}/Data/01_base/admin_data/campaign_collector_info.dta", keep(match)
+merge m:1 a7 using  "${repldir}/data/01_base/admin_data/campaign_collector_info.dta", keep(match)
 
 	* DGRKOC collector code
 	levelsof col1_colcode if tmt==1 | tmt==3 | tmt==4, local(col1)
@@ -268,7 +268,7 @@ merge m:1 a7 using  "${repldir}/Data/01_base/admin_data/campaign_collector_info.
 	
 	* Keep all central collectors
 	foreach c of local col{
-	use "${repldir}/Data/01_base/survey_data/collector_endline_noPII.dta", clear
+	use "${repldir}/data/01_base/survey_data/collector_endline_noPII.dta", clear
 	keep if tot_complete == 1
 	keep if col_type==1 & colcode==`c'
 	tempfile col_`c'

@@ -4,10 +4,10 @@
 ************************************************
 
 	* Use clean final data
-	u "${repldir}/Data/03_clean_combined/analysis_data.dta",clear
+	u "${repldir}/data/03_clean_combined/analysis_data.dta",clear
 	
 	* merge collector information from polygon level dataset
-	merge m:1 a7 using  "${repldir}/Data/01_base/admin_data/campaign_collector_info.dta", keep(match)
+	merge m:1 a7 using  "${repldir}/data/01_base/admin_data/campaign_collector_info.dta", keep(match)
 
 	* DGRKOC collector code
 	levelsof col1_colcode, local(col1)
@@ -21,7 +21,7 @@
 	
 	* Keep all central collectors
 	foreach c of local col{
-	use "${repldir}/Data/01_base/survey_data/collector_baseline_noPII.dta", clear
+	use "${repldir}/data/01_base/survey_data/collector_baseline_noPII.dta", clear
 	keep if tot_complete == 1
 	keep if col_type==1 & colcode==`c'
 	tempfile col_`c'
@@ -30,7 +30,7 @@
 	
 	* Keep all chiefs collectors
 	foreach c of local chef{
-	use "${repldir}/Data/01_base/survey_data/collector_baseline_noPII.dta", clear
+	use "${repldir}/data/01_base/survey_data/collector_baseline_noPII.dta", clear
 	keep if tot_complete == 1
 	keep if col_type==2 & chef_code==`c'
 	tempfile chef_`c'
@@ -47,7 +47,7 @@
 	rename chef_code code
 	* merge missing info from chief collector survey 
 	* educ, inc, possessions, trsut4, trust5, trust6, state_cap1, gov_resp, revcorr14_end
-	merge 1:1 code using "${repldir}/Data/01_base/survey_data/chief_survey_noPII.dta", ///
+	merge 1:1 code using "${repldir}/data/01_base/survey_data/chief_survey_noPII.dta", ///
 	keepusing(edu edu2 inc_mo possessions_1 possessions_2 possessions_3 possessions_4 possessions_5 possessions_6 possessions_0 trust4 trust5 trust6 state_cap1 gov_resp corr14_end sex age kga_born tax_who1 tax_who2 tax_who3 tax_who4 tax_who5 tax_who6 tax_who7 other_job other_job2) update replace 
 	keep if _merge>2
 	foreach c of local col{

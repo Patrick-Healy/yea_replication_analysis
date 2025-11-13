@@ -4,7 +4,7 @@
 ********************************************************************************
 
 forvalue i=1(1)15{
-u "${repldir}/Data/01_base/survey_data/collector_knowledge_clean.dta",clear
+u "${repldir}/data/01_base/survey_data/collector_knowledge_clean.dta",clear
 keep a7 code photo`i' person`i'_know person`i'_showname /*person`i'_name*/  person`i'_realname person`i'_job person`i'_edu
 rename code colcode
 replace photo`i'=subinstr(photo`i',"."," ",.)
@@ -29,7 +29,7 @@ tempfile photos_all
 save `photos_all'
 
 * Baseline survey
-u "${repldir}/Data/01_base/survey_data/baseline_noPII.dta",clear
+u "${repldir}/data/01_base/survey_data/baseline_noPII.dta",clear
 keep if tot_complete==1 
 keep code /*name_survey1*/ edu job1 
 tempfile baseline
@@ -83,7 +83,7 @@ replace job_knows=1 if job1==person_job
 ********************************************************************************
 
 * Chief's Information about citizens
-use "${repldir}/Data/01_base/survey_data/chief_knowledge.dta", clear
+use "${repldir}/data/01_base/survey_data/chief_knowledge.dta", clear
 keep a7 person*
 forvalue i=1(1)15{
 rename person`i'_need person_need`i'
@@ -100,7 +100,7 @@ save `chief_goods'
 
 * Info on respondents 
 forvalue i=1(1)15{
-insheet using "${repldir}/Data/01_base/survey_data/resident_info_quiz.csv", clear
+insheet using "${repldir}/data/01_base/survey_data/resident_info_quiz.csv", clear
 keep a7 photo`i'
 replace photo`i'=subinstr(photo`i',"."," ",.)
 rename photo`i' photo
@@ -122,7 +122,7 @@ tempfile photos_all
 save `photos_all'
 
 * Baseline survey
-u "${repldir}/Data/01_base/survey_data/baseline_noPII.dta",clear
+u "${repldir}/data/01_base/survey_data/baseline_noPII.dta",clear
 keep if tot_complete==1 
 keep code /*name_survey1*/ edu job1 
 tempfile baseline
@@ -177,12 +177,12 @@ replace job_knows=1 if job1==person_job
 use `central_info',clear
 drop if colcode==.
 rename (name_knows edu_knows job_knows) (C_name_knows C_edu_knows C_job_knows)
-merge m:1 code using "${repldir}/Data/01_base/survey_data/chief_info.dta"
+merge m:1 code using "${repldir}/data/01_base/survey_data/chief_info.dta"
 rename (name_knows edu_knows job_knows) (L_name_knows L_edu_knows L_job_knows)
 keep if _merge==3
 collapse (mean) C_name_knows C_edu_know C_job_knows C_knows C_knows_norm L_name_know L_edu_know L_job_knows L_knows  L_knows_norm, by(a7) 
 
-merge 1:1 a7 using "${repldir}/Data/01_base/admin_data/campaign_collector_info.dta"
+merge 1:1 a7 using "${repldir}/data/01_base/admin_data/campaign_collector_info.dta"
 keep if _m == 3 
 
 twoway ( kdensity  C_knows_norm) ( kdensity  L_knows_norm if (Tmt!=2 & Tmt!=4))  , ///

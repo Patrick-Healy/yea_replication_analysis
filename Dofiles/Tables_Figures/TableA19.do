@@ -7,7 +7,7 @@
 * Prepare datasets *
 ********************
 
-	use "${repldir}/Data/03_clean_combined/analysis_data.dta", clear
+	use "${repldir}/data/03_clean_combined/analysis_data.dta", clear
 	
 	keep if tmt==1 | tmt==2 | tmt==3
 	
@@ -31,7 +31,7 @@
 
 	* Use final Machine Learning data
 	preserve
-	insheet using "${repldir}/Data/01_base/admin_data/property_values_MLestimates.csv", clear
+	insheet using "${repldir}/data/01_base/admin_data/property_values_MLestimates.csv", clear
 	keep compound1 pred_value dist_*
 	drop if compound1==.
 	//rename compound1 compound_code
