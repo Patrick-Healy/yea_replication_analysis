@@ -1,0 +1,641 @@
+{
+  "repository": {
+    "name": "yea_replication_analysis",
+    "title": "Local Elites as State Capacity: How City Chiefs Use Local Information to Increase Tax Compliance in the D.R. Congo",
+    "authors": ["Pablo Balán (Harvard)", "Augustin Bergeron (Harvard)", "Gabriel Tourek (MIT)", "Jonathan L. Weigel (LSE & CEPR)"],
+    "publication_date": "2021-10-21",
+    "registry_id": "AEARCTR-0003308",
+    "study_type": "Randomized Controlled Trial (RCT)",
+    "field": "Development Economics",
+    "subfield": "Public Finance & Taxation",
+    "analysis_created": "2025-11-13"
+  },
+
+  "computational_requirements": {
+    "software": "Stata",
+    "version": "14.2+",
+    "editions": ["SE", "MP", "BE"],
+    "runtime_minutes": 30,
+    "required_packages": [
+      {"name": "estout", "source": "ssc", "purpose": "output tables"},
+      {"name": "outtable", "source": "ssc", "purpose": "matrix output"},
+      {"name": "mmat2tex", "source": "ssc", "purpose": "LaTeX output"},
+      {"name": "geodist", "source": "ssc", "purpose": "geographic distances"},
+      {"name": "center", "source": "ssc", "purpose": "centering variables"},
+      {"name": "grstyle", "source": "ssc", "purpose": "graph styles"},
+      {"name": "palettes", "source": "ssc", "purpose": "color palettes"},
+      {"name": "balancetable", "source": "ssc", "purpose": "balance tables"},
+      {"name": "winsor", "source": "ssc", "purpose": "winsorization"},
+      {"name": "revrs", "source": "ssc", "purpose": "reverse variables"},
+      {"name": "distplot", "source": "ssc", "purpose": "distribution plots"},
+      {"name": "blindschemes", "source": "ssc", "purpose": "colorblind-friendly schemes"},
+      {"name": "binscatter", "source": "ssc", "purpose": "binned scatterplots"},
+      {"name": "cibar", "source": "ssc", "purpose": "confidence interval bars"},
+      {"name": "cem", "source": "net", "url": "https://www.mattblackwell.org/files/stata", "purpose": "coarsened exact matching"},
+      {"name": "GSSU", "source": "net", "url": "https://www.jcsuarez.com/GSSU/", "purpose": "statistical utilities"}
+    ]
+  },
+
+  "workflow_stages": {
+    "stage_0": {
+      "name": "Master Control",
+      "script": "Dofiles/0_Master.do",
+      "purpose": "Orchestrates entire replication workflow",
+      "inputs": ["User-specified directory path"],
+      "outputs": ["Global macros for paths"],
+      "calls": ["1_Package_Setup.do", "2_Data_Construction.do", "3_Main_Tables_Figures.do", "4_Appendix_Tables_Figures.do"],
+      "runtime_order": 1
+    },
+    "stage_1": {
+      "name": "Package Setup",
+      "script": "Dofiles/1_Package_Setup.do",
+      "purpose": "Install and configure required Stata packages",
+      "inputs": [],
+      "outputs": ["Installed packages", "Graph scheme configuration"],
+      "dependencies": [],
+      "runtime_order": 2
+    },
+    "stage_2": {
+      "name": "Data Construction",
+      "script": "Dofiles/2_Data_Construction.do",
+      "purpose": "Clean and combine raw data into analysis-ready datasets",
+      "inputs": [
+        "data/01_base/admin_data/*",
+        "data/01_base/survey_data/*"
+      ],
+      "outputs": [
+        "data/02_intermediate/*.dta",
+        "data/03_clean_combined/analysis_data.dta",
+        "data/03_clean_combined/analysis_data_neighborhoods.dta"
+      ],
+      "lines_of_code": 1045,
+      "runtime_order": 3
+    },
+    "stage_3": {
+      "name": "Main Tables and Figures",
+      "script": "Dofiles/3_Main_Tables_Figures.do",
+      "purpose": "Generate main paper exhibits",
+      "inputs": ["data/03_clean_combined/analysis_data.dta"],
+      "outputs": ["Output/Table*.tex", "Output/Figure*.pdf"],
+      "subscripts": 9,
+      "runtime_order": 4
+    },
+    "stage_4": {
+      "name": "Appendix Tables and Figures",
+      "script": "Dofiles/4_Appendix_Tables_Figures.do",
+      "purpose": "Generate appendix exhibits",
+      "inputs": ["data/03_clean_combined/analysis_data.dta"],
+      "outputs": ["Output/TableA*.tex", "Output/FigureA*.pdf"],
+      "subscripts": 28,
+      "runtime_order": 5
+    }
+  },
+
+  "data_pipeline": {
+    "raw_data_sources": {
+      "administrative_data": {
+        "source": "Provincial Government of Kasaï Central",
+        "location": "data/01_base/admin_data/",
+        "files": [
+          {"name": "concessions_chefferies.csv", "purpose": "Geographic boundaries (chefferies)", "observations": "363 neighborhoods"},
+          {"name": "campaign_2016_neighborhoods.dta", "purpose": "2016 treatment assignment"},
+          {"name": "randomization_schedule.dta", "purpose": "2018 treatment assignment (main experiment)"},
+          {"name": "fliers_pilot_set1.xlsx", "purpose": "Pilot flier assignment set 1"},
+          {"name": "fliers_pilot_set2.xlsx", "purpose": "Pilot flier assignment set 2"},
+          {"name": "fliers_pilot_set3.xlsx", "purpose": "Pilot flier assignment set 3"},
+          {"name": "fliers_campaign.dta", "purpose": "Full campaign flier assignment"},
+          {"name": "registration_noPII.dta", "purpose": "Property registration (cartographie) records"},
+          {"name": "taxroll_noPII.dta", "purpose": "Tax roll (repertoire) data"}
+        ],
+        "privacy": "PII removed (V3 update)"
+      },
+      "survey_data": {
+        "source": "Authors' field surveys",
+        "location": "data/01_base/survey_data/",
+        "files": [
+          {"name": "baseline_noPII.dta", "purpose": "Household baseline survey", "phase": "pre-intervention"},
+          {"name": "midline_noPII.dta", "purpose": "Household midline survey", "phase": "mid-intervention"},
+          {"name": "endline_round1_noPII.dta", "purpose": "Household endline survey (round 1)", "phase": "post-intervention"},
+          {"name": "endline_round2_noPII.dta", "purpose": "Household endline survey (round 2)", "phase": "post-intervention"}
+        ],
+        "privacy": "PII removed (V3 update)"
+      }
+    },
+
+    "intermediate_data": {
+      "location": "data/02_intermediate/",
+      "purpose": "Cleaned single-source datasets",
+      "files": [
+        {"name": "concessions_chefferies.dta", "from": "concessions_chefferies.csv"},
+        {"name": "2016_tmt.dta", "from": "campaign_2016_neighborhoods.dta"},
+        {"name": "assignment.dta", "from": "randomization_schedule.dta"},
+        {"name": "flier_mailmerge.dta", "from": "fliers_*.xlsx and fliers_campaign.dta"},
+        {"name": "registration_cleaned.dta", "from": "registration_noPII.dta"},
+        {"name": "taxroll_cleaned.dta", "from": "taxroll_noPII.dta"}
+      ]
+    },
+
+    "final_data": {
+      "location": "data/03_clean_combined/",
+      "purpose": "Merged analysis-ready datasets",
+      "files": [
+        {
+          "name": "analysis_data.dta",
+          "level": "property-level",
+          "purpose": "Main analysis dataset",
+          "merges": [
+            "Geographic data (chefferies)",
+            "Treatment assignments (2016 & 2018)",
+            "Flier treatments",
+            "Registration data (cartographie)",
+            "Tax roll data (repertoire)",
+            "Survey data (baseline, midline, endline)"
+          ],
+          "unit_of_observation": "property (compound)",
+          "used_by": "All analysis scripts"
+        },
+        {
+          "name": "analysis_data_neighborhoods.dta",
+          "level": "neighborhood-level",
+          "purpose": "Neighborhood-level aggregates",
+          "unit_of_observation": "neighborhood (polygon/a7)",
+          "used_by": "Selected analysis scripts"
+        }
+      ]
+    }
+  },
+
+  "experimental_design": {
+    "design_type": "Randomized Controlled Trial",
+    "randomization_level": "neighborhood",
+    "stratification": "yes",
+    "total_units": 363,
+    "treatment_arms": [
+      {"code": 0, "name": "Control", "description": "Standard procedure"},
+      {"code": 1, "name": "Central", "description": "Central government collectors only"},
+      {"code": 2, "name": "Local", "description": "Local chief-led collection"},
+      {"code": 3, "name": "Central + Chief Info", "description": "Central collectors with chief's information", "abbreviation": "CLI"},
+      {"code": 4, "name": "Central X Local", "description": "Combined approach", "abbreviation": "CxL"}
+    ],
+    "data_collection_phases": [
+      {"phase": "baseline", "timing": "pre-intervention", "instruments": ["household survey"]},
+      {"phase": "registration", "timing": "intervention", "instruments": ["property registration campaign"]},
+      {"phase": "midline", "timing": "mid-intervention", "instruments": ["household survey"]},
+      {"phase": "endline_round1", "timing": "post-intervention", "instruments": ["household survey"]},
+      {"phase": "endline_round2", "timing": "post-intervention", "instruments": ["household survey"]}
+    ],
+    "outcome_categories": [
+      "Tax compliance (primary)",
+      "Tax revenues",
+      "Bribery and corruption",
+      "Household attitudes toward taxation",
+      "Collector behavior and knowledge",
+      "Chief information advantages"
+    ]
+  },
+
+  "analysis_outputs": {
+    "main_paper": {
+      "tables": [
+        {"number": 1, "script": "Table1.do", "title": "Campaign and evaluation activity counts", "data_sources": ["analysis_data.dta", "baseline_noPII.dta", "midline_noPII.dta", "endline_round1_noPII.dta"]},
+        {"number": 2, "script": "Table2.do", "title": "Treatment allocation", "data_sources": ["analysis_data.dta"]},
+        {"number": 3, "script": "Table3.do", "title": "Main results table 3", "data_sources": ["analysis_data.dta"]},
+        {"number": 4, "script": "Table4.do", "title": "Main results table 4", "data_sources": ["analysis_data.dta"]},
+        {"number": 5, "script": "Table5.do", "title": "Main results table 5", "data_sources": ["analysis_data.dta"]},
+        {"number": 6, "script": "Table6.do", "title": "Main results table 6", "data_sources": ["analysis_data.dta"]},
+        {"number": 7, "script": "Table7.do", "title": "Main results table 7", "data_sources": ["analysis_data.dta"]},
+        {"number": 8, "script": "Table8.do", "title": "Main results table 8", "data_sources": ["analysis_data.dta"]},
+        {"number": 9, "script": "Table9.do", "title": "Main results table 9", "data_sources": ["analysis_data.dta"]}
+      ],
+      "figures": [
+        {"number": 1, "script": "Figures1_A9_A10_A11_A14.do", "title": "Main figure", "also_produces": ["A9", "A10", "A11", "A14"], "data_sources": ["analysis_data.dta"]}
+      ]
+    },
+
+    "appendix": {
+      "tables": [
+        {"number": "A1", "script": "TableA1.do"},
+        {"number": "A2", "script": "TableA2.do"},
+        {"number": "A3", "script": "TableA3.do"},
+        {"number": "A4", "script": "TableA4.do"},
+        {"number": "A5", "script": "TablesA5_A18_FigureA6.do", "also_produces": ["A18", "FigureA6"]},
+        {"number": "A6", "script": "TableA6.do"},
+        {"number": "A7", "script": "TableA7.do"},
+        {"number": "A8", "script": "TablesA8_A14_A15_A27.do", "also_produces": ["A14", "A15", "A27"]},
+        {"number": "A9", "script": "TableA9.do"},
+        {"number": "A10", "script": "TableA10.do"},
+        {"number": "A11", "script": "TableA11.do"},
+        {"number": "A12", "script": "TableA12.do"},
+        {"number": "A13", "script": "TableA13.do"},
+        {"number": "A14", "script": "TablesA14_A43_A44.do", "also_produces": ["A43", "A44"]},
+        {"number": "A16", "script": "TableA16.do"},
+        {"number": "A17", "script": "TableA17.do"},
+        {"number": "A19", "script": "TableA19.do"},
+        {"number": "A20", "script": "TableA20.do"},
+        {"number": "A21", "script": "TableA21.do"},
+        {"number": "A22", "script": "TableA22.do"},
+        {"number": "A23", "script": "FigureA7_TableA23.do"},
+        {"number": "A24", "script": "TablesA24_A25.do", "also_produces": ["A25"]},
+        {"number": "A26", "script": "TableA26.do"},
+        {"number": "A28", "script": "TablesA28_A29_A30.do", "also_produces": ["A29", "A30"]},
+        {"number": "A31", "script": "TableA31.do"},
+        {"number": "A32", "script": "TableA32.do"},
+        {"number": "A33", "script": "TableA33.do"},
+        {"number": "A34", "script": "TablesA34_A35.do", "also_produces": ["A35"]},
+        {"number": "A36", "script": "TableA36.do"},
+        {"number": "A37", "script": "TableA37.do"},
+        {"number": "A38", "script": "FigureA18_TableA38.do"},
+        {"number": "A39", "script": "TableA39.do"},
+        {"number": "A40", "script": "TablesA40_A41_A42.do", "also_produces": ["A41", "A42"]},
+        {"number": "A45", "script": "TableA45.do"}
+      ],
+      "figures": [
+        {"number": "A4", "script": "FigureA4.do"},
+        {"number": "A5", "script": "FigureA5.do"},
+        {"number": "A6", "script": "TablesA5_A18_FigureA6.do"},
+        {"number": "A7", "script": "FigureA7_TableA23.do"},
+        {"number": "A9", "script": "Figures1_A9_A10_A11_A14.do"},
+        {"number": "A10", "script": "Figures1_A9_A10_A11_A14.do"},
+        {"number": "A11", "script": "Figures1_A9_A10_A11_A14.do"},
+        {"number": "A12", "script": "FigureA12.do"},
+        {"number": "A13", "script": "FigureA13.do"},
+        {"number": "A14", "script": "Figures1_A9_A10_A11_A14.do"},
+        {"number": "A15", "script": "FigureA15.do"},
+        {"number": "A18", "script": "FigureA18_TableA38.do"},
+        {"number": "A19", "script": "FigureA19.do"},
+        {"number": "A20", "script": "FigureA20.do"},
+        {"number": "A21", "script": "FiguresA21_A22.do", "also_produces": ["A22"]},
+        {"number": "A22", "script": "FiguresA21_A22.do"}
+      ]
+    }
+  },
+
+  "code_statistics": {
+    "total_do_files": 57,
+    "total_lines_of_code": 18234,
+    "master_scripts": 5,
+    "analysis_scripts": 52,
+    "breakdown": {
+      "0_Master.do": {"lines": 48, "type": "orchestration"},
+      "1_Package_Setup.do": {"lines": 40, "type": "configuration"},
+      "2_Data_Construction.do": {"lines": 1045, "type": "data_cleaning"},
+      "3_Main_Tables_Figures.do": {"lines": 14, "type": "orchestration"},
+      "4_Appendix_Tables_Figures.do": {"lines": 21, "type": "orchestration"},
+      "Tables_Figures/*": {"scripts": 52, "lines": 17066, "type": "analysis"}
+    }
+  },
+
+  "research_taxonomy": {
+    "jel_codes": ["H20", "H71", "O17", "O23"],
+    "jel_descriptions": [
+      "H20: Taxation, Subsidies, and Revenue (General)",
+      "H71: State and Local Taxation",
+      "O17: Formal and Informal Sectors; Shadow Economy; Institutional Arrangements",
+      "O23: Fiscal and Monetary Policy in Development"
+    ],
+    "methods": [
+      "Randomized Controlled Trial (RCT)",
+      "Difference-in-Differences",
+      "Regression analysis",
+      "Balance tests",
+      "Heterogeneity analysis",
+      "Robustness checks"
+    ],
+    "data_types": [
+      "Administrative data",
+      "Survey data (original collection)",
+      "Geographic data",
+      "Experimental data"
+    ],
+    "geographic_scope": {
+      "country": "Democratic Republic of Congo",
+      "region": "Kasaï Central Province",
+      "city": "Kananga",
+      "spatial_units": "363 neighborhoods"
+    },
+    "temporal_scope": {
+      "baseline": "2018",
+      "intervention": "2018",
+      "endline": "2018-2019"
+    }
+  },
+
+  "comparable_paper_characteristics": {
+    "paper_type": "Field Experiment in Development Economics",
+    "replication_standard": "AEA Data and Code Availability Policy compliant",
+    "data_availability": "Restricted (available via ICPSR repository)",
+    "code_availability": "Public (GitHub)",
+    "documentation_quality": "High (14-page README.pdf)",
+    "reproducibility_features": [
+      "Master script",
+      "Automated package installation",
+      "Modular code structure",
+      "Detailed comments",
+      "Clear file organization",
+      "Version history tracking"
+    ],
+    "comparison_metrics": {
+      "number_of_treatments": 5,
+      "number_of_observations_properties": "~15000-20000",
+      "number_of_clusters": 363,
+      "number_of_surveys": 4,
+      "number_of_main_exhibits": 10,
+      "number_of_appendix_exhibits": 67,
+      "code_to_output_ratio": "52 scripts / 77 exhibits = 0.68",
+      "documentation_pages": 14,
+      "runtime_efficiency": "30 minutes"
+    }
+  },
+
+  "queryable_tasks": [
+    {
+      "task_id": "T001",
+      "category": "data_cleaning",
+      "description": "Clean geographic data (chefferies)",
+      "script": "2_Data_Construction.do",
+      "lines": "20-26",
+      "input": "data/01_base/admin_data/concessions_chefferies.csv",
+      "output": "data/02_intermediate/concessions_chefferies.dta",
+      "transformations": ["drop missing polygons", "drop Nganza polygons (>=400 & <500)", "rename polygon to a7"]
+    },
+    {
+      "task_id": "T002",
+      "category": "data_cleaning",
+      "description": "Process 2016 treatment assignment",
+      "script": "2_Data_Construction.do",
+      "lines": "29-39",
+      "input": "data/01_base/admin_data/campaign_2016_neighborhoods.dta",
+      "output": "data/02_intermediate/2016_tmt.dta",
+      "transformations": ["drop Nganza", "keep a7 and program", "rename program to tmt_2016"]
+    },
+    {
+      "task_id": "T003",
+      "category": "data_cleaning",
+      "description": "Process 2018 treatment assignment (main experiment)",
+      "script": "2_Data_Construction.do",
+      "lines": "42-78",
+      "input": "data/01_base/admin_data/randomization_schedule.dta",
+      "output": "data/02_intermediate/assignment.dta",
+      "transformations": [
+        "add 7 pilot neighborhoods",
+        "assign treatments to pilot neighborhoods",
+        "correct field assignment mistake (a7==654)",
+        "label treatments (0=Control, 1=Central, 2=Local, 3=CLI, 4=CxL)"
+      ]
+    },
+    {
+      "task_id": "T004",
+      "category": "data_cleaning",
+      "description": "Process flier treatment assignments",
+      "script": "2_Data_Construction.do",
+      "lines": "81-143",
+      "input": ["fliers_pilot_set1.xlsx", "fliers_pilot_set2.xlsx", "fliers_pilot_set3.xlsx", "fliers_campaign.dta"],
+      "output": "data/02_intermediate/flier_mailmerge.dta",
+      "transformations": [
+        "merge pilot and campaign fliers",
+        "generate polygon variable from compound code",
+        "create pilot dummy",
+        "generate flier message indicators (1-6)",
+        "keep compound and flier assignment variables"
+      ]
+    },
+    {
+      "task_id": "T005",
+      "category": "data_cleaning",
+      "description": "Clean property registration (cartographie) data",
+      "script": "2_Data_Construction.do",
+      "lines": "146-174",
+      "input": "data/01_base/admin_data/registration_noPII.dta",
+      "output": "data/02_intermediate/registration_cleaned.dta",
+      "transformations": [
+        "keep only complete observations",
+        "rename today to today_carto",
+        "parse date strings",
+        "create day and month numerical variables"
+      ]
+    },
+    {
+      "task_id": "T006",
+      "category": "data_cleaning",
+      "description": "Clean tax roll (repertoire) data",
+      "script": "2_Data_Construction.do",
+      "lines": "176-183",
+      "input": "data/01_base/admin_data/taxroll_noPII.dta",
+      "output": "data/02_intermediate/taxroll_cleaned.dta",
+      "transformations": ["parse bonus amount from Bonus field using regex"]
+    },
+    {
+      "task_id": "T007",
+      "category": "data_cleaning",
+      "description": "Clean midline (monitoring) survey data",
+      "script": "2_Data_Construction.do",
+      "lines": "186-200",
+      "input": "data/01_base/survey_data/midline_noPII.dta",
+      "output": "intermediate processing",
+      "transformations": [
+        "drop tmt and pilot variables",
+        "rename compound to compound1",
+        "rename today to today_monitoring",
+        "impute missing compounds from possible_compound",
+        "create compound_guess indicator"
+      ]
+    },
+    {
+      "task_id": "T008",
+      "category": "data_merging",
+      "description": "Merge all data sources into main analysis dataset",
+      "script": "2_Data_Construction.do",
+      "lines": "201-1039",
+      "input": [
+        "data/02_intermediate/concessions_chefferies.dta",
+        "data/02_intermediate/assignment.dta",
+        "data/02_intermediate/flier_mailmerge.dta",
+        "data/02_intermediate/registration_cleaned.dta",
+        "data/02_intermediate/taxroll_cleaned.dta",
+        "data/01_base/survey_data/midline_noPII.dta",
+        "data/01_base/survey_data/baseline_noPII.dta",
+        "data/01_base/survey_data/endline_round1_noPII.dta",
+        "data/01_base/survey_data/endline_round2_noPII.dta"
+      ],
+      "output": "data/03_clean_combined/analysis_data.dta",
+      "transformations": [
+        "merge geographic data",
+        "merge treatment assignments",
+        "merge flier assignments",
+        "merge registration data",
+        "merge tax roll data",
+        "merge survey data (all phases)",
+        "create derived variables",
+        "impute missing dates",
+        "drop observations with missing rate"
+      ]
+    },
+    {
+      "task_id": "T009",
+      "category": "data_aggregation",
+      "description": "Create neighborhood-level dataset",
+      "script": "2_Data_Construction.do",
+      "lines": "1041-1044",
+      "input": "data/03_clean_combined/analysis_data.dta",
+      "output": "data/03_clean_combined/analysis_data_neighborhoods.dta",
+      "transformations": ["keep a7 and date variables", "drop duplicates"]
+    },
+    {
+      "task_id": "T010",
+      "category": "descriptive_analysis",
+      "description": "Generate Table 1: Campaign and evaluation activity counts",
+      "script": "Dofiles/Tables_Figures/Table1.do",
+      "input": ["analysis_data.dta", "baseline_noPII.dta", "midline_noPII.dta", "endline_round1_noPII.dta"],
+      "output": "Output/campaign_components.tex",
+      "analysis_type": "Descriptive statistics",
+      "exhibits": ["Table 1"]
+    },
+    {
+      "task_id": "T011",
+      "category": "descriptive_analysis",
+      "description": "Generate Table 2: Treatment allocation",
+      "script": "Dofiles/Tables_Figures/Table2.do",
+      "input": ["analysis_data.dta"],
+      "output": "Output/treatment_allocation.tex",
+      "analysis_type": "Descriptive statistics",
+      "exhibits": ["Table 2"]
+    },
+    {
+      "task_id": "T012",
+      "category": "main_analysis",
+      "description": "Generate Table 3: Main results",
+      "script": "Dofiles/Tables_Figures/Table3.do",
+      "input": ["analysis_data.dta"],
+      "output": "Output/Table3.tex",
+      "analysis_type": "Regression analysis",
+      "exhibits": ["Table 3"]
+    },
+    {
+      "task_id": "T013",
+      "category": "main_analysis",
+      "description": "Generate Table 4: Main results",
+      "script": "Dofiles/Tables_Figures/Table4.do",
+      "input": ["analysis_data.dta"],
+      "output": "Output/Table4.tex",
+      "analysis_type": "Regression analysis",
+      "exhibits": ["Table 4"]
+    },
+    {
+      "task_id": "T014",
+      "category": "main_analysis",
+      "description": "Generate Table 5: Main results",
+      "script": "Dofiles/Tables_Figures/Table5.do",
+      "input": ["analysis_data.dta"],
+      "output": "Output/Table5.tex",
+      "analysis_type": "Regression analysis",
+      "exhibits": ["Table 5"]
+    },
+    {
+      "task_id": "T015",
+      "category": "main_analysis",
+      "description": "Generate Table 6: Main results",
+      "script": "Dofiles/Tables_Figures/Table6.do",
+      "input": ["analysis_data.dta"],
+      "output": "Output/Table6.tex",
+      "analysis_type": "Regression analysis",
+      "exhibits": ["Table 6"]
+    },
+    {
+      "task_id": "T016",
+      "category": "main_analysis",
+      "description": "Generate Table 7: Main results",
+      "script": "Dofiles/Tables_Figures/Table7.do",
+      "input": ["analysis_data.dta"],
+      "output": "Output/Table7.tex",
+      "analysis_type": "Regression analysis",
+      "exhibits": ["Table 7"]
+    },
+    {
+      "task_id": "T017",
+      "category": "main_analysis",
+      "description": "Generate Table 8: Main results",
+      "script": "Dofiles/Tables_Figures/Table8.do",
+      "input": ["analysis_data.dta"],
+      "output": "Output/Table8.tex",
+      "analysis_type": "Regression analysis",
+      "exhibits": ["Table 8"]
+    },
+    {
+      "task_id": "T018",
+      "category": "main_analysis",
+      "description": "Generate Table 9: Main results",
+      "script": "Dofiles/Tables_Figures/Table9.do",
+      "input": ["analysis_data.dta"],
+      "output": "Output/Table9.tex",
+      "analysis_type": "Regression analysis",
+      "exhibits": ["Table 9"]
+    },
+    {
+      "task_id": "T019",
+      "category": "main_analysis",
+      "description": "Generate Figure 1 and Appendix Figures A9-A11, A14",
+      "script": "Dofiles/Tables_Figures/Figures1_A9_A10_A11_A14.do",
+      "input": ["analysis_data.dta"],
+      "output": ["Output/Figure1.pdf", "Output/FigureA9.pdf", "Output/FigureA10.pdf", "Output/FigureA11.pdf", "Output/FigureA14.pdf"],
+      "analysis_type": "Data visualization",
+      "exhibits": ["Figure 1", "Figure A9", "Figure A10", "Figure A11", "Figure A14"]
+    },
+    {
+      "task_id": "T020",
+      "category": "robustness_analysis",
+      "description": "Generate Appendix Tables and Figures (45 tables, 22 figures)",
+      "script": "Dofiles/4_Appendix_Tables_Figures.do",
+      "input": ["analysis_data.dta", "various survey files"],
+      "output": "Output/TableA*.tex and Output/FigureA*.pdf",
+      "analysis_type": "Robustness checks, heterogeneity analysis, balance tests",
+      "subscripts": 28,
+      "total_exhibits": 67
+    }
+  ],
+
+  "dependency_graph": {
+    "level_0_inputs": [
+      "concessions_chefferies.csv",
+      "campaign_2016_neighborhoods.dta",
+      "randomization_schedule.dta",
+      "fliers_pilot_set1.xlsx",
+      "fliers_pilot_set2.xlsx",
+      "fliers_pilot_set3.xlsx",
+      "fliers_campaign.dta",
+      "registration_noPII.dta",
+      "taxroll_noPII.dta",
+      "baseline_noPII.dta",
+      "midline_noPII.dta",
+      "endline_round1_noPII.dta",
+      "endline_round2_noPII.dta"
+    ],
+    "level_1_intermediates": [
+      "concessions_chefferies.dta",
+      "2016_tmt.dta",
+      "assignment.dta",
+      "flier_mailmerge.dta",
+      "registration_cleaned.dta",
+      "taxroll_cleaned.dta"
+    ],
+    "level_2_final": [
+      "analysis_data.dta",
+      "analysis_data_neighborhoods.dta"
+    ],
+    "level_3_outputs": [
+      "9 main tables",
+      "1 main figure",
+      "45 appendix tables",
+      "22 appendix figures"
+    ]
+  },
+
+  "quality_assurance": {
+    "version_control": "Git",
+    "ci_cd": ["GitHub Actions - Claude Code PR Assistant", "GitHub Actions - Claude Code Review"],
+    "code_review": "Automated",
+    "documentation": ["README.md", "README.pdf (14 pages)", "CHANGES.txt"],
+    "data_privacy": "PII removed (V3)",
+    "replication_tested": "Yes (runtime ~30 minutes)",
+    "platform_tested": ["Windows", "macOS", "Linux"]
+  }
+}
